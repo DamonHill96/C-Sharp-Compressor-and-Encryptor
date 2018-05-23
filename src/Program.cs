@@ -19,36 +19,28 @@ namespace Test
             //   Console.WriteLine("4. Decrypt");
             int choice = Int32.Parse(Console.ReadLine());
             OpenFileDialog fileDialog = new OpenFileDialog();
-            if (choice == 1 || choice == 3)
-            {
-                if (fileDialog.ShowDialog() == DialogResult.OK)
-                {
-                    string fileDir = fileDialog.FileName;
-                    string onlyFileName = Path.GetFileNameWithoutExtension(fileDir);
-                    string extension = Path.GetExtension(fileDir);
-                    string path = Path.GetDirectoryName(fileDir);
 
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string fileDir = fileDialog.FileName;
+                string onlyFileName = Path.GetFileNameWithoutExtension(fileDir);
+                string extension = Path.GetExtension(fileDir);
+                string path = Path.GetDirectoryName(fileDir);
+                if (choice == 1 || choice == 3)
+                {
                     src.FileEncoder fileHandle = new src.FileEncoder(path, onlyFileName, extension, fileDir, choice);
                     fileHandle.ReadFile();
                 }
-                
 
-                
-            }
-            else if (choice == 2 || choice == 4)
-            {
-                if (fileDialog.ShowDialog() == DialogResult.OK)
+                else if (choice == 2 || choice == 4)
                 {
-                    string fileDir = fileDialog.FileName;
-                    string onlyFileName = Path.GetFileNameWithoutExtension(fileDir);
-                    string extension = Path.GetExtension(fileDir);
-                    string path = Path.GetDirectoryName(fileDir);
 
                     src.FileDecoder fileDecode = new src.FileDecoder(path, onlyFileName, fileDir, choice);
                     fileDecode.ReadFile();
+
                 }
+                Console.ReadLine();
             }
-            Console.ReadLine();
         }
     }
 }
