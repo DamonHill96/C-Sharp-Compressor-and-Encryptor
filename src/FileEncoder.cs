@@ -30,7 +30,7 @@ namespace Test.src
             if (choice == 1) //compression
             {
                
-                algorithms.Compressor compressor = new algorithms.Compressor(encodedFile);
+                algorithms.HuffmanCompressor compressor = new algorithms.HuffmanCompressor(encodedFile);
               byte[] compressedFile = compressor.DoCompression();
               SaveEncodedFile(compressedFile, ".cmp");
             }

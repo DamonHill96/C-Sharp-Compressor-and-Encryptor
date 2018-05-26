@@ -23,7 +23,7 @@ namespace Test.src.algorithms
             int extLength = extension.Length + 1; //cuts escape character
             byte[] fileWithoutExt = new byte[fileLength - extLength]; //what is actually decompressed
 
-            Buffer.BlockCopy(encodedFile, extLength, fileWithoutExt, 0, fileLength - extLength);
+            Buffer.BlockCopy(encodedFile, extLength, fileWithoutExt, 0, fileLength - extLength); //removes extension
 
             byte[] decompressedFile = DoDecompression(fileWithoutExt);
             return decompressedFile;
