@@ -10,8 +10,13 @@ namespace Huffman_Coding
     {
         private HuffmanNodes root;
 
-        public HuffmanTree(IEnumerable<KeyValuePair<string, int>> freq, FrequencyTable frequencyTable)
+        public HuffmanTree()
 
+        {
+
+        }
+
+        public HuffmanNodes BuildTree(IEnumerable<KeyValuePair<string, int>> freq, FrequencyTable frequencyTable)
         {
             int count = frequencyTable.DictionaryLength();
 
@@ -36,7 +41,9 @@ namespace Huffman_Coding
             }
             q = frequencyTable.queue;
             root = frequencyTable.queue.Dequeue();
+            return root;
         }
+
         public IDictionary<string, string> AssignCode()
         {
             IDictionary<string, string> code = new Dictionary<string, string>();
@@ -53,24 +60,32 @@ namespace Huffman_Coding
             }
             else
             {
-                int index = 0;
-                char[] arr = path.ToCharArray();
-                // Cuts out excess 0
-                for(int i = 0; i < arr.Length; i++)
-                {
-                    if(arr[i] == 48) 
-                    {
-                        index++;
-                    }
-                    else
-                    {
-                        index = i;
-                        break;
-                        
-                    }
-                }
-                code.Add(root.Key, path.Substring(index)); 
+
+                int index = RemoveZero(path);
+
+                code.Add(root.Key, path.Substring(index));
             }
+        }
+
+        private int RemoveZero(string path)
+        {
+            char[] arr = path.ToCharArray();
+            // Cuts out excess 0
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] == 48) // looks for 0
+                {
+                    continue;
+                }
+                else
+                {
+                    return i;
+
+                }
+
+            }
+            return 0;
+
         }
     }
 }
