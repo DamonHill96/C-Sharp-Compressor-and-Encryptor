@@ -39,7 +39,6 @@ namespace Test.src.algorithms
 
         public string handleHuffmanFile(IDictionary<string, string> file)
         {
-            byte[] huffEncoded;
 
             StringBuilder sb = new StringBuilder(); // for testing
             for (int i = 0; i < encodedFile.Length; i++)

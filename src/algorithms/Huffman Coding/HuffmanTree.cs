@@ -16,7 +16,7 @@ namespace Huffman_Coding
 
         }
 
-        public HuffmanNodes BuildTree(IEnumerable<KeyValuePair<string, int>> freq, FrequencyTable frequencyTable)
+        public HuffmanNodes BuildTree(Dictionary<string,int> freq, FrequencyTable frequencyTable)
         {
             int count = frequencyTable.DictionaryLength();
 
@@ -34,13 +34,13 @@ namespace Huffman_Coding
                 frequencyTable.count--;
                 HuffmanNodes n2 = frequencyTable.queue.Dequeue();
                 frequencyTable.count--;
-                var n3 = new HuffmanNodes { Left = n1, Right = n2, Value = n1.Value + n2.Value }; //adds together
+                HuffmanNodes n3 = new HuffmanNodes { Left = n1, Right = n2, Value = n1.Value + n2.Value }; //adds together
                 n1.Parent = n3;
                 n2.Parent = n3;
                 frequencyTable.Enqueue(n3);
             }
             q = frequencyTable.queue;
-            root = frequencyTable.queue.Dequeue();
+            root = q.Dequeue();
             return root;
         }
 

@@ -11,7 +11,7 @@ namespace Huffman_Coding
         private IDictionary<string, int> dict { get; set; } = new Dictionary<string, int>();
         public Queue<HuffmanNodes> queue { get; set; } = new Queue<HuffmanNodes>();
         public int count { get; set; }
-
+        
         public Dictionary<string, int> Sort()
         {
             //Sorts for priority
@@ -39,7 +39,7 @@ namespace Huffman_Coding
                     dict.Add(currentChar, 1);
                 };
 
-            }
+            }       
             return Sort(); //Sort table and return to Compressor
 
 
