@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Huffman_Coding;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,18 +7,50 @@ using System.Threading.Tasks;
 
 namespace Test.src.algorithms
 {
-    class Compressor
+    class HuffmanCompressor
     {
         private byte[] encodedFile;
 
-        public Compressor(byte[] encodedFile)
+
+        public HuffmanCompressor(byte[] encodedFile)
         {
             this.encodedFile = encodedFile;
         }
-        
-        public byte[] DoCompression()
+        //Huffman Coding
+        public string DoCompression()
         {
-            return encodedFile;
+            FrequencyTable frequency = new FrequencyTable();
+            Dictionary<string, int> frequencyTable = frequency.BuildFrequencyTable(encodedFile);
+
+            HuffmanTree tree = new HuffmanTree();
+            HuffmanNodes fullTree = tree.BuildTree(frequencyTable, frequency);
+            IDictionary<string, string> binaryValues = tree.AssignCode();
+            binaryValues[binaryValues.First().Key] = "0"; //Stops eliminating first value
+
+            foreach (KeyValuePair<string, string> kvp in binaryValues)
+            {
+                Console.WriteLine((kvp.Key == "\n" ? "EOF" : kvp.Key.ToString()) + ":\t" + kvp.Value);
+            }
+
+
+            string final = handleHuffmanFile(binaryValues);
+            return final;
         }
+
+        public string handleHuffmanFile(IDictionary<string, string> file)
+        {
+
+            StringBuilder sb = new StringBuilder(); // for testing
+            for (int i = 0; i < encodedFile.Length; i++)
+            {
+                string currentChar = Convert.ToChar(encodedFile[i]).ToString();
+                string code = file[currentChar]; //gets binary equivalent
+                sb.Append(code);
+            }
+
+
+            return sb.ToString();
+        }
+
     }
 }

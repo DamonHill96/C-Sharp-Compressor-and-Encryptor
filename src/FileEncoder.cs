@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -30,8 +31,8 @@ namespace Test.src
             if (choice == 1) //compression
             {
                
-                algorithms.Compressor compressor = new algorithms.Compressor(encodedFile);
-              byte[] compressedFile = compressor.DoCompression();
+                algorithms.HuffmanCompressor compressor = new algorithms.HuffmanCompressor(encodedFile);
+              string compressedFile = compressor.DoCompression();
               SaveEncodedFile(compressedFile, ".cmp");
             }
             else // 3 - encrypt
@@ -40,7 +41,7 @@ namespace Test.src
                 string pass = Console.ReadLine();
                 algorithms.Encryptor encryptor = new algorithms.Encryptor(encodedFile);
                 byte[] encryptedFile = encryptor.SetupEncrypt(pass);
-                SaveEncodedFile(encryptedFile, ".enc");
+              //  SaveEncodedFile(encryptedFile, ".enc");
             }
           
             
@@ -64,19 +65,48 @@ namespace Test.src
             return newResult;
         }
 
-        private void SaveEncodedFile(byte[] encodedFile, string ext)
+        private void SaveEncodedFile(string file, string ext)
         {
+            FileStream fs = null;
+            BinaryWriter bw = null;
             try
             {
+                int size = file.Length / 8;
+               
                 Console.WriteLine(path + name + ext);
-                File.WriteAllBytes(path + "\\" + name + ext, encodedFile);
+                
+                while (size % 8 != 0)
+                {
+                    file.PadLeft(1);
+                    size++;
+                   
+                }
+
+                byte[] arr = new byte[size];
+                
+                for (int i = 0; i < size / 8; i++) {
+                   
+                    var test = file.Substring(i * 8, 8);
+                    arr[i] = Convert.ToByte(test, 2);
+                }
+                fs = new FileStream(path + "\\"+name+ext, FileMode.Create);
+                
+                bw = new BinaryWriter(fs);
+                bw.Write(arr);
                 Console.WriteLine("Writing Complete");
             }
             catch (IOException e)
             {
                 Console.WriteLine(e.StackTrace);
             }
+            finally
+            {
+                fs.Close();
+                bw.Close();
+            }
         }
+
+     
 
         private byte[] GetFileBytes()
         {
